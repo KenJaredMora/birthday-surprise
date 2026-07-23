@@ -60,8 +60,15 @@ const buttonVariants = cva(
   }
 );
 
+// Framer Motion's <motion.button> redefines several DOM event handlers
+// (onAnimationStart, onAnimationEnd, onDrag, onDragStart, onDragEnd) with
+// its own animation-specific signatures, which collide with the native
+// DOM signatures from React.ButtonHTMLAttributes. We omit them from the
+// type used here since we don't use any of them.
+type NativeButtonPropsWithoutMotionConflicts = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onAnimationStart" | "onAnimationEnd" | "onDrag" | "onDragStart" | "onDragEnd">;
+
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends NativeButtonPropsWithoutMotionConflicts,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
@@ -69,17 +76,7 @@ export interface ButtonProps
 const MotionButton = motion.button;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      asChild = false,
-      onClick,
-      children,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, variant, asChild = false, onClick, children, ...props }, ref) => {
     const { playClick } = useSound();
 
     if (asChild) {
@@ -90,7 +87,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           className={cn(buttonVariants({ variant }), className)}
           {...props}
-        />
+        >
+          {children}
+        </Comp>
       );
     }
 
