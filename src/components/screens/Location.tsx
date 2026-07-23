@@ -10,7 +10,7 @@ interface LocationProps {
 const LOCATIONS = [
   {
     id: "domo",
-    label: "Domo del Huerto",
+    label: "Domo",
     image: "/images/glamping/domo-del-huerto.jpg",
   },
   {
