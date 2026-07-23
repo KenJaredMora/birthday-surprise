@@ -14,7 +14,7 @@ interface GuestConfirmationEmailProps {
 }
 
 export default function GuestConfirmationEmail({
-  guestName = "Sam",
+  guestName = "Saam",
 }: GuestConfirmationEmailProps) {
   return (
     <Html>
