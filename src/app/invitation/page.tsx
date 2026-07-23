@@ -6,7 +6,7 @@ import { Countdown } from "@/components/ui/countdown";
  * Flip it to `true` once you've actually booked everything, redeploy,
  * and Sam's link (already sent by email) instantly reveals the invite.
  */
-const UNLOCKED = false;
+const UNLOCKED = true;
 
 export default function InvitationPage() {
   if (!UNLOCKED) {
