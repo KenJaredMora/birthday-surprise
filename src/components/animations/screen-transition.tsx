@@ -1,41 +1,103 @@
 "use client";
 
-import { motion, type Variants, type Easing } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { motion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
-// Editorial easeOut — never bounce. Shared with globals.css --ease-editorial.
-const EASE_EDITORIAL: Easing = [0.16, 1, 0.3, 1];
-
 /**
- * Every screen is 100vh, no scroll, one at a time — Capítulo 2.
- * Outgoing screen: opacity 1→0, y 0→-30
- * Incoming screen: opacity 0→1, y 30→0
- * Duration: 700ms · Ease: easeOut · Never bounce.
+ * ============================================================
+ * ScreenTransition
+ * ------------------------------------------------------------
+ * Wrapper utilizado por todas las pantallas de la aplicación.
+ *
+ * Objetivos:
+ * - Una sola pantalla visible a la vez.
+ * - Movimiento editorial.
+ * - Sin rebotes.
+ * - Animaciones suaves.
+ * - Reutilizable.
+ *
+ * Inspiración:
+ * Apple • Linear • Stripe
+ * ============================================================
  */
-const variants: Variants = {
-  initial: { opacity: 0, y: 30, filter: "blur(12px)" },
+
+const EASE_EDITORIAL: [number, number, number, number] = [
+  0.16,
+  1,
+  0.3,
+  1,
+];
+
+const containerVariants: Variants = {
+  initial: {
+    opacity: 0,
+    y: 40,
+    filter: "blur(14px)",
+  },
+
   animate: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE_EDITORIAL },
   },
+
   exit: {
     opacity: 0,
-    y: -30,
-    filter: "blur(12px)",
-    transition: { duration: 0.7, ease: EASE_EDITORIAL },
+    y: -24,
+    filter: "blur(10px)",
   },
 };
 
-export function ScreenTransition({ children }: { children: ReactNode }) {
+interface ScreenTransitionProps {
+  children: ReactNode;
+
+  /**
+   * Clases adicionales.
+   */
+  className?: string;
+
+  /**
+   * Centrar verticalmente el contenido.
+   * true = centro absoluto.
+   * false = libre para layouts futuros.
+   */
+  centered?: boolean;
+
+  /**
+   * Delay opcional.
+   */
+  delay?: number;
+
+  /**
+   * Duración opcional.
+   */
+  duration?: number;
+}
+
+export function ScreenTransition({
+  children,
+  className,
+  centered = true,
+  delay = 0,
+  duration = 0.8,
+}: ScreenTransitionProps) {
   return (
     <motion.div
-      variants={variants}
+      variants={containerVariants}
       initial="initial"
       animate="animate"
       exit="exit"
-      className="fixed inset-0 flex flex-col items-center justify-center px-6 md:px-20 lg:px-40"
+      transition={{
+        duration,
+        delay,
+        ease: EASE_EDITORIAL,
+      }}
+      className={cn(
+        "absolute inset-0 w-full h-full overflow-hidden px-6 md:px-20 lg:px-40",
+        centered && "flex items-center justify-center",
+        className
+      )}
     >
       {children}
     </motion.div>

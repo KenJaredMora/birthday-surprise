@@ -1,73 +1,133 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
+import { Reveal } from "@/components/animations/Reveal";
 import { Button } from "@/components/ui/button";
 
 interface WelcomeProps {
   onNext: () => void;
 }
 
-/**
- * Pantalla 1 — emotion: curiosidad ("¿Qué es esto?")
- * Beat: "Proyecto 07·08" appears huge, alone.
- * Then "Una experiencia está a punto de comenzar." fades in below.
- * No greeting by name here — that's Pantalla 2's job.
- *
- * Easter egg: tap "07·08" three times — quiet, undocumented, findable only
- * by someone who lingers on the number. Reveals one extra line, then resets.
- */
+const EASE: [number, number, number, number] = [
+  0.16,
+  1,
+  0.3,
+  1,
+];
+
 export function Welcome({ onNext }: WelcomeProps) {
   const [taps, setTaps] = useState(0);
+  const [loading, setLoading] = useState(false);
+
   const revealed = taps >= 3;
 
+  function handleContinue() {
+    if (loading) return;
+
+    setLoading(true);
+
+    setTimeout(() => {
+      onNext();
+    }, 900);
+  }
+
   return (
-    <div className="flex flex-col items-center gap-10 text-center">
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="text-[var(--color-primary)]"
-      >
-        Proyecto{" "}
-        <span
-          onClick={() => setTaps((t) => (t >= 3 ? 0 : t + 1))}
-          className="text-[var(--color-accent)] cursor-default"
+    <div className="relative flex w-full max-w-4xl flex-col items-center text-center">
+
+      {/* Proyecto */}
+      <Reveal>
+        <p className="mb-2 font-sans text-xs uppercase tracking-[0.45em] text-[var(--color-text-secondary)]">
+          Proyecto
+        </p>
+      </Reveal>
+
+      {/* 07·08 */}
+      <Reveal delay={0.15}>
+        <motion.h1
+          onClick={() => setTaps((value) => (value >= 3 ? 0 : value + 1))}
+          whileTap={{ scale: 0.98 }}
+          className="
+            cursor-default
+            select-none
+            text-[5.2rem]
+            font-semibold
+            leading-none
+            tracking-[-0.05em]
+            text-[var(--color-accent)]
+            md:text-[7.5rem]
+          "
         >
           07·08
-        </span>
-      </motion.h1>
+        </motion.h1>
+      </Reveal>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.9, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="font-sans text-lg text-[var(--color-text-secondary)] max-w-md"
-      >
-        Una experiencia está a punto de comenzar.
-      </motion.p>
+      {/* subtitulo */}
+      <Reveal delay={0.35}>
+        <p
+          className="
+            mt-10
+            max-w-xl
+            font-sans
+            text-lg
+            leading-8
+            text-[var(--color-text-secondary)]
+          "
+        >
+          No todas las invitaciones comienzan con una pregunta.
+          <br />
+          Algunas empiezan con un poco de curiosidad.
+        </p>
+      </Reveal>
 
-      <AnimatePresence>
+      {/* easter egg */}
+
+      <AnimatePresence mode="wait">
         {revealed && (
-          <motion.p
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="font-sans text-sm text-[var(--color-text-secondary)] italic"
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: 10,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+            transition={{
+              duration: .45,
+              ease: EASE,
+            }}
+            className="mt-8"
           >
-            07 · 08 — no es una fecha cualquiera.
-          </motion.p>
+            <p className="font-sans text-sm italic text-[var(--color-text-secondary)]">
+              🙂
+              <br />
+              Sabía que intentarías descubrir si escondí algo aquí.
+            </p>
+          </motion.div>
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.9, delay: 1.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Button onClick={onNext}>Comenzar</Button>
-      </motion.div>
+      {/* botón */}
+
+      <Reveal delay={0.75}>
+        <div className="mt-20">
+
+          <Button
+            disabled={loading}
+            onClick={handleContinue}
+          >
+            {loading
+              ? "Preparando tu invitación..."
+              : "Empecemos"}
+          </Button>
+
+        </div>
+      </Reveal>
     </div>
   );
 }
