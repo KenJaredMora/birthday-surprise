@@ -25,9 +25,9 @@ export default function InvitationPage() {
     <main className="flex h-dvh w-dvw flex-col items-center justify-center gap-6 bg-[var(--color-bg,#f8f5f0)] px-6 text-center">
       <h1 className="text-[var(--color-primary,#7a2e2e)]">Nos vemos</h1>
       <p className="font-sans text-2xl text-[var(--color-text,#322b28)]">
-        31 de julio · 5:00 PM
+        30 de Agosto · 5:00 PM
       </p>
-      <Countdown target={new Date("2026-07-31T17:00:00")} />
+      <Countdown target={new Date("2026-08-3T17:00:00")} />
     </main>
   );
 }
