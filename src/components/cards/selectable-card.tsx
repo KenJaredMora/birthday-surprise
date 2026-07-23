@@ -1,8 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
 import { useSound } from "@/hooks/useSound";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import * as React from "react";
 
 export interface SelectableCardProps {
   label: string;
@@ -11,10 +12,6 @@ export interface SelectableCardProps {
   onSelect: () => void;
 }
 
-/**
- * The "tarjeta" from the spec: no radio buttons anywhere.
- * Selected state: scale + shadow + accent border, per Capítulo 3.
- */
 export function SelectableCard({
   label,
   icon,
@@ -24,27 +21,56 @@ export function SelectableCard({
   const { playClick } = useSound();
 
   return (
-    <button
+    <motion.button
       type="button"
+      aria-pressed={selected}
+      whileHover={{
+        y: -4,
+        scale: 1.02,
+      }}
+      whileTap={{
+        scale: 0.98,
+      }}
+      transition={{
+        duration: 0.22,
+      }}
       onClick={() => {
         playClick();
         onSelect();
       }}
-      aria-pressed={selected}
       className={cn(
-        "flex flex-col items-center justify-center gap-4",
-        "w-full max-w-[220px] aspect-[4/5] rounded-3xl",
-        "bg-[var(--color-card)] border transition-all duration-[220ms] ease-[var(--ease-editorial)]",
-        "cursor-pointer",
+        "group",
+        "flex flex-col items-center justify-center",
+        "min-h-[220px]",
+        "w-full",
+        "rounded-[28px]",
+        "border",
+        "bg-white",
+        "px-8",
+        "py-8",
+        "transition-all",
+        "duration-200",
+
         selected
-          ? "border-[var(--color-accent)] scale-[1.03] shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
-          : "border-[var(--color-line)] shadow-[var(--shadow-soft)] hover:scale-[1.015]"
+          ? "border-[var(--color-accent)] shadow-[0_20px_50px_rgba(0,0,0,.10)]"
+          : "border-[var(--color-line)] shadow-[0_8px_30px_rgba(0,0,0,.05)]"
       )}
     >
-      <span className="text-5xl">{icon}</span>
-      <span className="font-sans text-base font-semibold text-[var(--color-text)]">
+      <div className="mb-6 text-6xl transition-transform duration-300 group-hover:scale-110">
+        {icon}
+      </div>
+
+      <span
+        className="
+          text-center
+          text-xl
+          font-semibold
+          leading-7
+          text-[var(--color-text)]
+        "
+      >
         {label}
       </span>
-    </button>
+    </motion.button>
   );
 }

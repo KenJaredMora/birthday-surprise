@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import GuestConfirmationEmail from "@/emails/GuestConfirmationEmail";
 import HostSummaryEmail from "@/emails/HostSummaryEmail";
 import type { Answers } from "@/types";
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 // Required env vars (put these in .env.local — never commit them):
 //   RESEND_API_KEY=
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       resend.emails.send({
         from: "Proyecto 07·08 <onboarding@resend.dev>",
         to: hostEmail,
-        subject: "Sam eligió — Proyecto 07·08",
+        subject: "Saam eligió — Proyecto 07·08",
         react: HostSummaryEmail({
           answers,
           invitationUrl: `${siteUrl}/invitation`,

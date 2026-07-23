@@ -69,10 +69,30 @@
 }
 
 body {
-  background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  overflow: hidden; /* screens are 100vh, no page scroll — see Capítulo 2 */
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(255,255,255,.85),
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(199,106,67,.05),
+      transparent 42%
+    ),
+    linear-gradient(
+      180deg,
+      #fcfaf7 0%,
+      #f8f5f0 45%,
+      #f5f1ea 100%
+    );
+
+  position: relative;
 }
 
 h1,

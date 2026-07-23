@@ -1,25 +1,37 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Poppins } from "next/font/google";
+
+import { BackgroundDecoration } from "@/components/background/BackgroundDecoration";
 import "./globals.css";
 
-// Titles — DM Serif Display only ships as weight 400.
+// -----------------------------------------------------------------------------
+// Tipografías
+// -----------------------------------------------------------------------------
+
 const dmSerifDisplay = DM_Serif_Display({
-  variable: "--font-dm-serif-display",
   subsets: ["latin"],
   weight: "400",
+  variable: "--font-dm-serif-display",
 });
 
-// Body copy — SemiBold everywhere, Bold is banned per the spec.
 const poppins = Poppins({
-  variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  variable: "--font-poppins",
 });
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
   title: "Proyecto 07·08",
   description: "Una experiencia está a punto de comenzar.",
 };
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function RootLayout({
   children,
@@ -27,11 +39,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <body
         className={`${dmSerifDisplay.variable} ${poppins.variable} antialiased`}
       >
-        {children}
+        {/* Decoración de fondo */}
+        <BackgroundDecoration />
+
+        {/* Contenido */}
+        <div className="relative z-10 h-dvh w-dvw overflow-hidden">
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+import type { Answers } from "@/types";
 import {
   Body,
   Button,
@@ -10,7 +11,6 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import type { Answers } from "@/types";
 
 interface HostSummaryEmailProps {
   answers: Answers;
@@ -34,10 +34,10 @@ export default function HostSummaryEmail({
   return (
     <Html>
       <Head />
-      <Preview>Sam eligió — Proyecto 07·08</Preview>
+      <Preview>Saam eligió — Proyecto 07·08</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Heading style={heading}>Sam eligió</Heading>
+          <Heading style={heading}>Saam eligió</Heading>
 
           <Section style={section}>
             <Row label="Comida" value={answers.food ? foodLabel[answers.food] : "—"} />

@@ -1,27 +1,67 @@
 "use client";
 
+import { Reveal } from "@/components/animations/Reveal";
 import { Button } from "@/components/ui/button";
 
 interface IntroProps {
   onNext: () => void;
 }
 
-/** Pantalla 2 — emotion: confianza ("Esto lo hizo Kenyon") */
 export function Intro({ onNext }: IntroProps) {
   return (
-    <div className="flex flex-col items-center gap-8 text-center max-w-xl">
-      <h2>Hola Sam.</h2>
+    <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
 
-      <div className="font-sans text-lg leading-relaxed text-[var(--color-text-secondary)] space-y-4">
-        <p>Como ya habrás notado... me gusta hacer las cosas un poquito diferentes.</p>
-        <p>Y como este mes es tu cumpleaños... necesito una pequeña ayuda.</p>
-        <p>Responderás algunas preguntas para que yo me encargue del resto.</p>
-        <p className="text-[var(--color-text)] font-medium">
+      <Reveal>
+        <p className="mb-3 font-sans text-xs uppercase tracking-[0.35em] text-[var(--color-text-secondary)]">
+          Capítulo 1
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.1}>
+        <h2 className="max-w-2xl">
+          Hola, Sam.
+        </h2>
+      </Reveal>
+
+      <Reveal delay={0.25}>
+        <div className="mt-10 max-w-2xl space-y-6 font-sans text-lg leading-8 text-[var(--color-text-secondary)]">
+
+          <p>
+            Como ya habrás notado...
+            <br />
+            me gusta hacer las cosas un poquito diferentes.
+          </p>
+
+          <p>
+            Y como este mes es tu cumpleaños,
+            pensé que sería más divertido dejar que tú
+            eligieras algunos detalles.
+          </p>
+
+          <p>
+            Solo responderás unas cuantas preguntas.
+            Yo me encargaré absolutamente de todo lo demás.
+          </p>
+
+        </div>
+      </Reveal>
+
+      <Reveal delay={0.55}>
+        <p className="mt-10 font-sans text-xl font-medium text-[var(--color-text)]">
+          Confía en mí.
+          <br />
           Prometo que valdrá la pena.
         </p>
-      </div>
+      </Reveal>
 
-      <Button onClick={onNext}>Empezar</Button>
+      <Reveal delay={0.8}>
+        <div className="mt-20">
+          <Button onClick={onNext}>
+            Continuar
+          </Button>
+        </div>
+      </Reveal>
+
     </div>
   );
 }

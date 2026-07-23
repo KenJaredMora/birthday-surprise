@@ -1,38 +1,59 @@
 "use client";
 
-import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import { useSound } from "@/hooks/useSound";
+import { motion } from "framer-motion";
+import * as React from "react";
 
-/**
- * Button — Capítulo 2 spec:
- *  height: 56px · radius: 9999px · padding-x: 32px
- *  font: Poppins SemiBold 16px · hover scale 1.03 · click scale 0.98
- *  duration: 220ms · focus: 2px outline var(--color-accent)
- */
+import { useSound } from "@/hooks/useSound";
+import { cn } from "@/lib/utils";
+
 const buttonVariants = cva(
   [
-    "inline-flex items-center justify-center gap-2",
-    "h-14 min-w-[220px] rounded-[var(--radius-pill)] px-8",
-    "font-sans text-base font-semibold tracking-[0.2px]",
-    "transition-transform duration-[220ms] ease-[var(--ease-editorial)]",
-    "hover:scale-[1.03] active:scale-[0.98]",
-    "disabled:pointer-events-none disabled:opacity-40",
-    "cursor-pointer select-none",
+    "inline-flex items-center justify-center",
+    "rounded-full",
+    "font-semibold",
+    "select-none",
+    "transition-all",
+    "duration-200",
+    "disabled:pointer-events-none",
+    "disabled:opacity-50",
   ].join(" "),
   {
     variants: {
       variant: {
-        primary:
-          "text-[var(--color-card)] bg-[var(--color-primary)] hover:shadow-[0_12px_32px_rgba(122,46,46,0.18)]",
-        outline:
-          "bg-transparent text-[var(--color-text)] border border-[var(--color-line)] hover:border-[var(--color-accent)]",
-        ghost:
-          "bg-transparent text-[var(--color-text-secondary)] min-w-0 h-auto px-2 hover:text-[var(--color-text)]",
+        primary: [
+          "h-16",
+          "min-w-[260px]",
+          "px-10",
+          "bg-[var(--color-primary)]",
+          "text-white",
+          "text-lg",
+          "shadow-[0_12px_40px_rgba(122,46,46,.18)]",
+          "hover:shadow-[0_18px_55px_rgba(122,46,46,.25)]",
+        ].join(" "),
+
+        outline: [
+          "h-16",
+          "min-w-[260px]",
+          "px-10",
+          "border",
+          "border-[var(--color-line)]",
+          "bg-white",
+          "text-[var(--color-text)]",
+          "text-lg",
+        ].join(" "),
+
+        ghost: [
+          "bg-transparent",
+          "text-[var(--color-text-secondary)]",
+          "px-4",
+          "py-2",
+          "text-base",
+        ].join(" "),
       },
     },
+
     defaultVariants: {
       variant: "primary",
     },
@@ -45,24 +66,60 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
+const MotionButton = motion.button;
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, asChild = false, onClick, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+  (
+    {
+      className,
+      variant,
+      asChild = false,
+      onClick,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const { playClick } = useSound();
 
+    if (asChild) {
+      const Comp = Slot;
+
+      return (
+        <Comp
+          ref={ref}
+          className={cn(buttonVariants({ variant }), className)}
+          {...props}
+        />
+      );
+    }
+
     return (
-      <Comp
+      <MotionButton
         ref={ref}
+        whileHover={{
+          scale: 1.03,
+          y: -2,
+        }}
+        whileTap={{
+          scale: 0.98,
+        }}
+        transition={{
+          duration: 0.2,
+        }}
         className={cn(buttonVariants({ variant }), className)}
-        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick={(e) => {
           playClick();
           onClick?.(e);
         }}
         {...props}
-      />
+      >
+        {children}
+      </MotionButton>
     );
   }
 );
+
 Button.displayName = "Button";
 
 export { Button, buttonVariants };

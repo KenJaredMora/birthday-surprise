@@ -1,8 +1,11 @@
 "use client";
 
-import * as React from "react";
-import * as SliderPrimitive from "@radix-ui/react-slider";
 import { cn } from "@/lib/utils";
+import * as SliderPrimitive from "@radix-ui/react-slider";
+import { motion } from "framer-motion";
+import * as React from "react";
+
+const MotionThumb = motion(SliderPrimitive.Thumb);
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
@@ -16,19 +19,56 @@ const Slider = React.forwardRef<
     )}
     {...props}
   >
-    <SliderPrimitive.Track className="relative h-1 w-full grow overflow-hidden rounded-full bg-[var(--color-line)]">
-      <SliderPrimitive.Range className="absolute h-full bg-[var(--color-accent)]" />
+    <SliderPrimitive.Track
+      className="
+        relative
+        h-2
+        w-full
+        grow
+        overflow-hidden
+        rounded-full
+        bg-[var(--color-line)]
+      "
+    >
+      <SliderPrimitive.Range
+        className="
+          absolute
+          h-full
+          rounded-full
+          bg-[var(--color-accent)]
+        "
+      />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb
+
+    <MotionThumb
+      whileHover={{
+        scale: 1.12,
+      }}
+      whileTap={{
+        scale: 0.95,
+      }}
+      transition={{
+        duration: 0.18,
+      }}
       className={cn(
-        "block h-6 w-6 rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-card)]",
-        "shadow-[var(--shadow-soft)] transition-transform duration-[220ms] ease-[var(--ease-editorial)]",
-        "hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]",
-        "cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+        "block",
+        "h-8",
+        "w-8",
+        "rounded-full",
+        "border-[3px]",
+        "border-[var(--color-accent)]",
+        "bg-white",
+        "shadow-[0_8px_25px_rgba(0,0,0,.12)]",
+        "focus-visible:outline-none",
+        "focus-visible:ring-4",
+        "focus-visible:ring-[rgba(186,147,125,.18)]",
+        "cursor-grab",
+        "active:cursor-grabbing"
       )}
     />
   </SliderPrimitive.Root>
 ));
+
 Slider.displayName = SliderPrimitive.Root.displayName;
 
 export { Slider };
