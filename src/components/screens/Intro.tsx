@@ -19,7 +19,7 @@ export function Intro({ onNext }: IntroProps) {
 
       <Reveal delay={0.1}>
         <h2 className="max-w-2xl">
-          Hola, Sam.
+          Hola, Saam.
         </h2>
       </Reveal>
 

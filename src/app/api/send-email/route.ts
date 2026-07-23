@@ -6,7 +6,7 @@ import { Resend } from "resend";
 
 // Required env vars (put these in .env.local — never commit them):
 //   RESEND_API_KEY=
-//   GUEST_EMAIL=      (Sam's email)
+//   GUEST_EMAIL=      (Saam's email)
 //   HOST_EMAIL=       (your email)
 //   NEXT_PUBLIC_SITE_URL=  (e.g. https://project0708.vercel.app)
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         from: "Proyecto 07·08 <onboarding@resend.dev>",
         to: guestEmail,
         subject: "Proyecto 07·08",
-        react: GuestConfirmationEmail({ guestName: "Sam" }),
+        react: GuestConfirmationEmail({ guestName: "Saam" }),
       }),
       resend.emails.send({
         from: "Proyecto 07·08 <onboarding@resend.dev>",
